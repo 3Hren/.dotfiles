@@ -16,7 +16,7 @@ if os.path.exists('debian/changelog'):
 	with open('debian/changelog') as f:
 		changelog_content = f.read()
 else:
-	print 'You must run dch_i.py in a source package containing debian/changelog'
+	print('You must run dch_i.py in a source package containing debian/changelog')
 	sys.exit(1)
 
 # Get original information ( package_name (version) distrib; urgency )
@@ -40,16 +40,16 @@ template = """%(pkg_name)s (%(pkg_version)s) %(pkg_distrib)s; urgency=low
 
 """
 
-pushed_content = template %info + changelog_content
+pushed_content = template % info + changelog_content
 
 with tempfile.NamedTemporaryFile() as f:
 
 	# Write template contents
-	f.write(pushed_content)
+	f.write(pushed_content.encode())
 	f.flush()
 
 	# Spawn Editor
-  	call([EDITOR, f.name])
+	call([EDITOR, f.name])
 
 	# Copy new file
 	shutil.copyfile(f.name, "debian/changelog")
